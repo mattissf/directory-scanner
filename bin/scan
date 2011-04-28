@@ -1,0 +1,64 @@
+#!/usr/bin/env ruby
+require_relative '../src/directory_scanner'
+require 'trollop'
+
+SUB_COMMANDS=%w(duplicates differences)
+
+if ARGV.empty? then
+  ARGV.push '--help'
+end
+
+global_opts = Trollop::options do
+  version "DirectoryScanner 0.0.1"
+  banner "DirectoryScanner by Mattis Stordalen Flister"
+  banner ""
+  banner "Usage: scan [OPTIONS] SUBCOMMAND"
+  banner ""
+  banner "Supported subcommmands:"
+  banner "  duplicates\t Scans for duplicates in a directory"
+  banner "  differences\t Scans for differences between two directories"
+  banner ""
+  banner "Supported options:"
+  stop_on SUB_COMMANDS
+end
+
+cmd = ARGV.shift #get the subcommand
+
+if ARGV.empty? then
+  ARGV.push '--help'
+end
+
+case cmd
+  when "duplicates"
+    cmd_opts = Trollop::options do
+      banner "DirectoryScanner by Mattis Stordalen Flister"
+      banner ""
+      banner "Usage: scan duplicates [OPTIONS] DIR"
+      banner ""
+      banner "Supported options:"
+      opt :verbose, "Print verbose information", :default => false
+    end
+
+    path_to_scan = ARGV.shift
+
+    Trollop::die("You have to supply a directory to scan for duplicates") if path_to_scan.nil?
+    Trollop::die "#{path_to_scan} is not a directory" unless File.directory? path_to_scan
+
+    $scanner = DirectoryScanner.new
+
+    $scanner.set_verbose if cmd_opts[:verbose]
+
+    $scanner.print_duplicates_of Dir.open path_to_scan
+
+  when "differences"
+    cmd_opts = Trollop::options do
+      banner "DirectoryScanner by Mattis Stordalen Flister"
+      banner ""
+      banner "Usage: scan differences [OPTIONS] DIR1 DIR2"
+      banner ""
+      banner "Supported options:"
+      opt :verbose, "Print verbose information"
+    end
+  else
+    Trollop::die "You have to supply a valid subcommand: #{SUB_COMMANDS.inspect}"
+end
