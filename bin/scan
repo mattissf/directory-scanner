@@ -9,8 +9,8 @@ if ARGV.empty? then
 end
 
 global_opts = Trollop::options do
-  version "DirectoryScanner 0.0.1"
-  banner "DirectoryScanner by Mattis Stordalen Flister"
+  version "directory-scanner 0.0.1"
+  banner "directory-scanner by Mattis Stordalen Flister"
   banner ""
   banner "Usage: scan [OPTIONS] SUBCOMMAND"
   banner ""
@@ -31,7 +31,7 @@ end
 case cmd
   when "duplicates"
     cmd_opts = Trollop::options do
-      banner "DirectoryScanner by Mattis Stordalen Flister"
+      banner "directory-scanner by Mattis Stordalen Flister"
       banner ""
       banner "Usage: scan duplicates [OPTIONS] DIR"
       banner ""
@@ -52,7 +52,7 @@ case cmd
 
   when "differences"
     cmd_opts = Trollop::options do
-      banner "DirectoryScanner by Mattis Stordalen Flister"
+      banner "directory-scanner by Mattis Stordalen Flister"
       banner ""
       banner "Usage: scan differences [OPTIONS] DIR1 DIR2"
       banner ""
